@@ -5,8 +5,11 @@ from flask import Flask, request, jsonify, redirect, abort
 import redis
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 
 DB_HOST = os.getenv("DB_HOST", "db")
 DB_NAME = os.getenv("DB_NAME", "shortlink")

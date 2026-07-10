@@ -19,8 +19,10 @@ services:
       DB_PASS: shortlink
       REDIS_HOST: cache
     depends_on:
-      - db
-      - cache
+      db: 
+        condition: service_healthy
+      cache:
+        condition: service_started
 
   db:
     image: postgres:15
@@ -30,9 +32,17 @@ services:
       POSTGRES_PASSWORD: shortlink
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shortlink -d shortlink"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   cache:
     image: redis:7
 
 volumes:
   db_data:
+
+
+
