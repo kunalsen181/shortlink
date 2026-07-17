@@ -28,4 +28,4 @@ Then open http://localhost:8080
 5. Jenkins — CI/CD pipeline
 6. AWS — migrate infra with Terraform/EKS
 
-Testing Jenkins auto-trigger.
+Testing Jenkins auto-trigger..
