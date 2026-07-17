@@ -33,7 +33,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f k8s/db.yaml -f k8s/cache.yaml -f k8s/backend.yaml -f k8s/frontend.yaml -f k8s/ingress.yaml'
+                sh 'kubectl apply -f K8s/db.yaml -f K8s/cache.yaml -f K8s/backend.yaml -f K8s/frontend.yaml -f K8s/ingress.yaml'
                 sh 'kubectl rollout restart deployment backend'
                 sh 'kubectl rollout restart deployment frontend'
             }
