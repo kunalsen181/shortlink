@@ -1,4 +1,4 @@
-const API_BASE = window.location.origin.replace(":8080", ":5000");
+const API_BASE = "";
 
 async function shorten() {
   const url = document.getElementById("urlInput").value;

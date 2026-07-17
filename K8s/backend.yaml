@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: shortlink-backend:latest
+          imagePullPolicy: Never
+          env:
+            - name: DB_HOST
+              value: db
+            - name: DB_NAME
+              value: shortlink
+            - name: DB_USER
+              value: shortlink
+            - name: DB_PASS
+              value: shortlink
+            - name: REDIS_HOST
+              value: cache
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: backend
+  ports:
+    - port: 5000
+      targetPort: 5000

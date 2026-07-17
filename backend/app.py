@@ -77,10 +77,10 @@ def shorten():
 
     r.set(code, original_url, ex=3600)
 
-    return jsonify({"code": code, "short_url": f"/{code}"}), 201
+    return jsonify({"code": code, "short_url": f"/r/{code}"}), 201
 
 
-@app.route("/<code>")
+@app.route("/r/<code>")
 def redirect_to_url(code):
     cached = r.get(code)
     if cached:
