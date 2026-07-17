@@ -27,3 +27,5 @@ Then open http://localhost:8080
 4. Kubernetes (Kind) — deploy the app in-cluster
 5. Jenkins — CI/CD pipeline
 6. AWS — migrate infra with Terraform/EKS
+
+Testing Jenkins auto-trigger.
