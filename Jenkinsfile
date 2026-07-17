@@ -20,7 +20,7 @@ pipeline {
 
     stage('Build Frontend Image') {
       steps {
-        sh 'docker build -t shortlink-fromtend:latest ./frontend
+        sh 'docker build -t shortlink-frontend:latest ./frontend
       }
     }
 
