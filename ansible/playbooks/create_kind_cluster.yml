@@ -1,0 +1,15 @@
+---
+- name: Create Kind Cluster
+  hosts: aws
+  become: true
+
+  tasks:
+    - name: Check existing Kind clusters
+      command: kind get clusters
+      register: kind_clusters
+      changed_when: false
+      failed_when: false
+
+    - name: Create Kind Cluster
+      command: kind create cluster --name shortlink-cluster
+      when: "'shortlink-cluster' not in kind_clusters.stdout"

@@ -1,0 +1,32 @@
+---
+- name: Install Kind and kubectl on AWS EC2
+  hosts: aws
+  become: true
+
+  tasks:
+
+    - name: Download Kind binary
+      get_url:
+        url: "https://kind.sigs.k8s.io/dl/v0.32.0/kind-linux-amd64"
+        dest: "/usr/local/bin/kind"
+        mode: "0755"
+
+    - name: Get the latest kubectl stable version
+      uri:
+        url: "https://dl.k8s.io/release/stable.txt"
+        return_content: yes
+      register: kubectl_release
+
+    - name: Download the latest kubectl
+      get_url:
+        url: "https://dl.k8s.io/release/{{ kubectl_release.content | trim }}/bin/linux/amd64/kubectl"
+        dest: "/usr/local/bin/kubectl"
+        mode: "0755"
+
+    - name: Verify kubectl installation
+      command: kubectl version --client
+      register: version
+
+    - name: Display kubectl version
+      debug:
+        var: version.stdout

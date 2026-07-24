@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_USERNAME = "senkunal18"
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Backend Image') {
+            steps {
+                sh 'docker build -t $DOCKERHUB_USERNAME/shortlink-backend:latest ./app/backend'
+            }
+        }
+
+        stage('Build Frontend Image') {
+            steps {
+                sh 'docker build -t $DOCKERHUB_USERNAME/shortlink-frontend:latest ./app/frontend'
+            }
+        }
+
+        stage('Push Images') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+
+                    docker push $DOCKERHUB_USERNAME/shortlink-backend:latest
+                    docker push $DOCKERHUB_USERNAME/shortlink-frontend:latest
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to K3s') {
+            steps {
+                sh '''
+                kubectl apply -f kubernetes/
+
+                kubectl rollout restart deployment backend
+                kubectl rollout restart deployment frontend
+                '''
+            }
+        }
+    }
+}

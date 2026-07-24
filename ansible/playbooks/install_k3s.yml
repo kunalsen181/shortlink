@@ -1,0 +1,25 @@
+---
+- name: Install K3s on AWS EC2
+  hosts: aws
+  become: true
+
+  tasks:
+
+    - name: Install K3s
+      shell: curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Enable K3s
+      service:
+        name: k3s
+        enabled: yes
+        state: started
+
+    - name: Verify cluster
+      command: kubectl get nodes
+      register: nodes
+      changed_when: false
+
+    - debug:
+        var: nodes.stdout
