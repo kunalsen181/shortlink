@@ -5,13 +5,13 @@
 
   tasks:
 
-    - name: Install Java (required by Jenkins)
+    - name: Install Java
       apt:
         name: openjdk-21-jre
         state: present
         update_cache: yes
 
-    - name: Ensure keyrings directory exists
+    - name: Create keyrings directory
       file:
         path: /etc/apt/keyrings
         state: directory
@@ -19,7 +19,7 @@
 
     - name: Download Jenkins GPG key
       get_url:
-        url: "https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key"
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
         dest: /etc/apt/keyrings/jenkins-keyring.asc
         mode: "0644"
 
@@ -27,9 +27,8 @@
       apt_repository:
         repo: "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/"
         filename: jenkins
-        state: present
 
-    - name: Update apt package cache
+    - name: Update apt
       apt:
         update_cache: yes
 
@@ -38,23 +37,58 @@
         name: jenkins
         state: present
 
-    - name: Ensure Jenkins service is running
-      service:
-        name: jenkins
-        state: started
-        enabled: yes
-
-    - name: Add jenkins user to docker group
+    - name: Add jenkins to docker group
       user:
         name: jenkins
         groups: docker
         append: yes
 
-    - name: Verify Jenkins service
-      command: systemctl is-active jenkins
-      register: jenkins_status
-      changed_when: false
+    - name: Create .kube directory
+      file:
+        path: /var/lib/jenkins/.kube
+        owner: jenkins
+        group: jenkins
+        mode: "0700"
+        state: directory
 
-    - name: Display Jenkins service status
-      debug:
-        var: jenkins_status.stdout
+    - name: Copy kubeconfig
+      copy:
+        src: /etc/rancher/k3s/k3s.yaml
+        remote_src: yes
+        dest: /var/lib/jenkins/.kube/config
+        owner: jenkins
+        group: jenkins
+        mode: "0600"
+
+    - name: Replace localhost with private IP
+      replace:
+        path: /var/lib/jenkins/.kube/config
+        regexp: '127\.0\.0\.1|localhost'
+        replace: "{{ ansible_default_ipv4.address }}"
+
+    - name: Create systemd override directory
+      file:
+        path: /etc/systemd/system/jenkins.service.d
+        state: directory
+
+    - name: Configure Jenkins environment
+      copy:
+        dest: /etc/systemd/system/jenkins.service.d/override.conf
+        content: |
+          [Service]
+          Environment="KUBECONFIG=/var/lib/jenkins/.kube/config"
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Restart Jenkins
+      service:
+        name: jenkins
+        state: restarted
+        enabled: yes
+
+    - name: Wait for Jenkins
+      wait_for:
+        port: 8080
+        timeout: 180
