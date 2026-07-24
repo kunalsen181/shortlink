@@ -44,14 +44,18 @@ pipeline {
         }
 
         stage('Deploy to K3s') {
-            steps {
-                sh '''
-                kubectl apply -f kubernetes/
+    		steps {
+        		sh '''
+        		kubectl apply -f kubernetes/backend.yaml
+        		kubectl apply -f kubernetes/cache.yaml
+        		kubectl apply -f kubernetes/db.yaml
+        		kubectl apply -f kubernetes/frontend.yaml
+        		kubectl apply -f kubernetes/ingress.yaml
 
-                kubectl rollout restart deployment backend
-                kubectl rollout restart deployment frontend
-                '''
-            }
-        }
+        		kubectl rollout status deployment/backend
+        		kubectl rollout status deployment/frontend
+        		'''
+    		}
+	}
     }
 }
