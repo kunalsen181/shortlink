@@ -48,3 +48,13 @@ jenkins_home/
 
 # Docker
 *.tar
+
+# SSH Keys
+terraform/ssh/*
+!terraform/ssh/*.pub
+
+# Ansible Inventory
+ansible/inventory/*.ini
+
+# Optional
+*.pem
