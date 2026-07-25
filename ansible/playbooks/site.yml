@@ -6,3 +6,7 @@
 - import_playbook: install_git.yml
 
 - import_playbook: install_jenkins.yml
+
+- import_playbook: install_helm.yml
+
+- import_playbook: monitoring.yml

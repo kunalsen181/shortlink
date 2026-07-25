@@ -8,6 +8,11 @@ from psycopg2.extras import RealDictCursor
 from flask_cors import CORS
 
 app = Flask(__name__)
+
+from prometheus_flask_exporter import PrometheusMetrics
+
+metrics = PrometheusMetrics(app)
+
 CORS(app)
 
 

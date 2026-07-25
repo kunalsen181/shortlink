@@ -127,6 +127,35 @@ resource "aws_security_group" "ec2_sg" {
 
   }
 
+  ingress {
+
+    description = "Grafana"
+
+    from_port = 32000
+
+    to_port = 32000
+
+    protocol = "tcp"
+
+    cidr_blocks= ["0.0.0.0/0"]
+
+  }
+
+  ingress {
+
+    description = "Prometheus"
+
+    from_port = 32090
+
+    to_port = 32090
+
+    protocol = "tcp"
+
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+
+
   egress {
 
     from_port = 0
@@ -159,13 +188,18 @@ resource "aws_key_pair" "shortlink_key" {
 resource "aws_instance" "shortlink_server" {
 
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.small"
+  instance_type = "c7i-flex.large"
 
   subnet_id = aws_subnet.public.id
 
   vpc_security_group_ids = [
     aws_security_group.ec2_sg.id
   ]
+
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+  }
 
   key_name = aws_key_pair.shortlink_key.key_name
 
