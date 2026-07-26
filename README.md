@@ -6,6 +6,7 @@ The project provisions AWS infrastructure using Terraform, configures the server
 
 ---
 
+
 # 🚀 Tech Stack
 
 ### Cloud
@@ -43,44 +44,6 @@ The project provisions AWS infrastructure using Terraform, configures the server
 - Backend (Flask)
 - PostgreSQL
 - Redis
-
----
-
-# 📂 Project Structure
-
-aws-jenkins-k3s
-│
-├── ansible/
-│   ├── inventory/
-│   ├── playbooks/
-│   └── ansible.cfg
-│
-├── app/
-│   ├── backend/
-│   ├── frontend/
-│   ├── docker-compose.yml
-│
-├── jenkins/
-│   └── Jenkinsfile
-│
-├── kubernetes/
-│   ├── backend.yaml
-│   ├── frontend.yaml
-│   ├── db.yaml
-│   ├── cache.yaml
-│   ├── ingress.yaml
-│   └── kind-config.yaml
-│
-├── terraform/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── providers.tf
-│   ├── outputs.tf
-│   ├── inventory.tpl
-│   └── terraform.tfvars
-│
-└── README.md
-```
 
 ---
 
