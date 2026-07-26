@@ -1,71 +1,37 @@
-# ��� End-to-End DevOps Deployment of a ShortLink Application
+# 🚀 End-to-End DevOps CI/CD Pipeline on AWS using Terraform, Ansible, Jenkins, Docker & Kubernetes (K3s)
 
-An end-to-end DevOps project demonstrating Infrastructure as Code (IaC), Configuration Management, Containerization, Kubernetes Orchestration, CI/CD Automation, and Monitoring using modern DevOps tools.
+An end-to-end DevOps project demonstrating complete Infrastructure as Code (IaC), Configuration Management, Continuous Integration, Continuous Deployment, Containerization, Kubernetes orchestration, and Monitoring.
 
-The project provisions AWS infrastructure with Terraform, configures the server using Ansible, deploys a Flask-based ShortLink application on Kubernetes (K3s), automates deployments using Jenkins, and monitors the infrastructure using Prometheus and Grafana.
-
----
-
-# ��� Architecture
-
-```
-                    +----------------------+
-                    |      GitHub Repo     |
-                    +----------+-----------+
-                               |
-                         Git Push
-                               |
-                               ▼
-                    +----------------------+
-                    | GitHub Webhook       |
-                    +----------+-----------+
-                               |
-                               ▼
-                    +----------------------+
-                    | Jenkins CI/CD        |
-                    +----------+-----------+
-                               |
-                 Build Docker Images
-                               |
-                               ▼
-                    Push Images to Docker Hub
-                               |
-                               ▼
-                    +----------------------+
-                    | Kubernetes (K3s)     |
-                    +----------+-----------+
-                               |
-      -------------------------------------------------
-      |               |               |               |
-      ▼               ▼               ▼               ▼
-  Frontend        Backend        PostgreSQL        Redis
-
-                               |
-                               ▼
-                    +----------------------+
-                    | Prometheus           |
-                    +----------+-----------+
-                               |
-                               ▼
-                    +----------------------+
-                    | Grafana Dashboard    |
-                    +----------------------+
-```
+The project provisions AWS infrastructure using Terraform, configures the server using Ansible, builds and deploys a multi-container application through Jenkins CI/CD, and monitors the Kubernetes cluster using Prometheus and Grafana.
 
 ---
 
-# ��� Tech Stack
+# 📌 Project Architecture
+
+
+
+---
+
+# 🚀 Tech Stack
 
 ### Cloud
 - AWS EC2
+- AWS EBS
 - AWS VPC
-- AWS Security Groups
+- Subnet
+- Internet Gateway
+- Route Tables
+- Security Groups
 
 ### Infrastructure as Code
 - Terraform
 
 ### Configuration Management
 - Ansible
+
+### CI/CD
+- Jenkins
+- GitHub Webhook
 
 ### Containerization
 - Docker
@@ -74,63 +40,105 @@ The project provisions AWS infrastructure with Terraform, configures the server 
 ### Container Orchestration
 - Kubernetes (K3s)
 
-### CI/CD
-- Jenkins
-- GitHub Webhooks
-
 ### Monitoring
 - Prometheus
 - Grafana
 
-### Application
-- Flask
+### Application Stack
+- Frontend (Nginx)
+- Backend (Flask)
 - PostgreSQL
 - Redis
 
 ---
 
-# ��� Project Structure
+# 📂 Project Structure
 
-```
-shortlink-devops/
-
+aws-jenkins-k3s
+│
 ├── ansible/
 │   ├── inventory/
 │   ├── playbooks/
-│   └── roles/
+│   └── ansible.cfg
 │
-├── terraform/
-│   ├── main.tf
-│   ├── provider.tf
-│   ├── variables.tf
-│   └── outputs.tf
-│
-├── kubernetes/
-│   ├── backend-deployment.yml
-│   ├── frontend-deployment.yml
-│   ├── postgres.yml
-│   ├── redis.yml
-│   ├── ingress.yml
-│   └── monitoring.yml
-│
-├── docker/
-│   ├── backend.Dockerfile
-│   └── frontend.Dockerfile
+├── app/
+│   ├── backend/
+│   ├── frontend/
+│   ├── docker-compose.yml
 │
 ├── jenkins/
 │   └── Jenkinsfile
 │
-├── backend/
-├── frontend/
+├── kubernetes/
+│   ├── backend.yaml
+│   ├── frontend.yaml
+│   ├── db.yaml
+│   ├── cache.yaml
+│   ├── ingress.yaml
+│   └── kind-config.yaml
 │
-├── screenshots/
+├── terraform/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── providers.tf
+│   ├── outputs.tf
+│   ├── inventory.tpl
+│   └── terraform.tfvars
 │
 └── README.md
 ```
 
 ---
 
-# ⚙ Infrastructure Provisioning
+# ⚙️ CI/CD Workflow
+
+Developer
+      │
+      ▼
+Git Push
+      │
+      ▼
+GitHub Repository
+      │
+      ▼
+GitHub Webhook
+      │
+      ▼
+Jenkins Pipeline
+      │
+      ├── Checkout Source Code
+      ├── Build Docker Images
+      ├── Push Images to Docker Hub
+      └── Deploy to Kubernetes (kubectl apply)
+                │
+                ▼
+          K3s Kubernetes Cluster
+                │
+        ┌───────┼────────┐
+        ▼       ▼        ▼
+   Frontend  Backend   Database
+                       Redis
+```
+
+---
+
+# 📊 Monitoring
+
+Prometheus continuously scrapes metrics from the Kubernetes cluster.
+
+Grafana uses Prometheus as its data source to visualize:
+
+- CPU Usage
+- Memory Usage
+- Disk Usage
+- Node Health
+- Kubernetes Cluster Metrics
+- Running Pods
+- System Performance
+
+---
+
+# 🔨 Infrastructure Provisioning
 
 Terraform provisions:
 
@@ -144,43 +152,39 @@ Terraform provisions:
 
 ---
 
-# ⚙ Configuration Management
+# ⚙️ Server Configuration
 
-Ansible automatically installs and configures:
+Ansible automates:
 
-- Docker
-- Kubernetes (K3s)
-- kubectl
-- Helm
-- Jenkins
-- Prometheus
-- Grafana
+- Docker Installation
+- K3s Installation
+- Jenkins Installation
+- Required Packages
+- System Configuration
 
 ---
 
-# ��� Containerization
+# 🐳 Docker
 
-The application is containerized using Docker.
+The application is containerized into:
 
-Separate Docker images are built for:
+- Frontend Image
+- Backend Image
 
-- Backend
-- Frontend
-
-Images are pushed to Docker Hub and later pulled inside the Kubernetes cluster.
+Docker images are pushed to Docker Hub before deployment.
 
 ---
 
-# ☸ Kubernetes Deployment
+# ☸️ Kubernetes Deployment
 
-Application components deployed on K3s:
+Application components running inside K3s:
 
-- Frontend
-- Backend
+- Frontend (Nginx)
+- Backend (Flask)
 - PostgreSQL
 - Redis
 
-Kubernetes resources used:
+Kubernetes resources include:
 
 - Deployments
 - Services
@@ -188,167 +192,53 @@ Kubernetes resources used:
 
 ---
 
-# ��� CI/CD Pipeline
+# 📈 Jenkins Pipeline
 
-Pipeline flow:
+Pipeline Stages:
 
-```
-Developer Pushes Code
-          │
-          ▼
-GitHub Webhook
-          │
-          ▼
-Jenkins Pipeline
-          │
-          ▼
-Build Docker Images
-          │
-          ▼
-Push Images to Docker Hub
-          │
-          ▼
-Update Kubernetes Deployment
-          │
-          ▼
-Rolling Update
-```
+1. Checkout Repository
+2. Build Docker Images
+3. Push Images to Docker Hub
+4. Deploy to Kubernetes
+5. Verify Deployment
+
+The pipeline is automatically triggered using a **GitHub Webhook** whenever new code is pushed.
 
 ---
 
-# ��� Monitoring
-
-Prometheus is used to collect metrics from the Kubernetes cluster.
-
-Metrics monitored include:
-
-- Node CPU Usage
-- Node Memory Usage
-- Node Disk Usage
-- Kubernetes Node Health
-- Pod Status
-- Pod Restarts
-- Kubernetes Services
-
-Grafana is connected to Prometheus and provides dashboards for visualizing these metrics.
-
----
-
-# ��� Screenshots
-
-## Jenkins Pipeline
-
-> Add Screenshot
-
----
-
-## GitHub Webhook
-
-> Add Screenshot
-
----
-
-## Kubernetes Pods
-
-```bash
-kubectl get pods
-```
-
-> Add Screenshot
-
----
-
-## Prometheus Dashboard
-
-> Add Screenshot
-
----
-
-## Grafana Dashboard
-
-> Add Screenshot
-
----
-
-## Terraform Apply
-
-> Add Screenshot
-
----
-
-# ��� Deployment Steps
-
-## Provision Infrastructure
-
-```bash
-cd terraform
-
-terraform init
-
-terraform apply
-```
-
----
-
-## Configure Server
-
-```bash
-cd ansible
-
-ansible-playbook setup.yml
-```
-
----
-
-## Deploy Application
-
-```bash
-kubectl apply -f kubernetes/
-```
-
----
-
-## CI/CD
-
-Whenever code is pushed to GitHub:
-
-- GitHub triggers Jenkins via Webhook.
-- Jenkins builds Docker images.
-- Images are pushed to Docker Hub.
-- Kubernetes performs a rolling update.
-
----
-
-# ��� Features
+# 🛠️ Features
 
 - Infrastructure as Code using Terraform
 - Automated Server Configuration using Ansible
-- Dockerized Flask Application
-- Kubernetes (K3s) Deployment
-- Jenkins Automated CI/CD Pipeline
+- Jenkins CI/CD Pipeline
 - GitHub Webhook Integration
+- Docker Image Build & Push
+- Kubernetes Deployment
+- Ingress Configuration
 - Prometheus Monitoring
-- Grafana Dashboards
-- Rolling Application Updates
+- Grafana Dashboard
+- Fully Automated Deployment Workflow
 
 ---
 
-# ��� Future Improvements
 
-- SSL using Let's Encrypt
-- Alertmanager Integration
-- Persistent Storage for Jenkins & Grafana
-- Horizontal Pod Autoscaler (HPA)
-- Kubernetes Cluster Scaling
-- Application Metrics using Flask Prometheus Exporter
+# 📚 Skills Demonstrated
+
+- AWS
+- Terraform
+- Ansible
+- Jenkins
+- GitHub Webhooks
+- Docker
+- Docker Hub
+- Kubernetes (K3s)
+- CI/CD
+- Infrastructure as Code
+- Monitoring
+- DevOps Automation
 
 ---
 
-# ���‍��� Author
+# 👨‍💻 Author
 
 **Kunal Sen**
-
-GitHub: https://github.com/<your-github-username>
-
-LinkedIn: https://linkedin.com/in/<your-linkedin>
-
