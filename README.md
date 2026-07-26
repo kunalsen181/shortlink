@@ -6,6 +6,11 @@ The project provisions AWS infrastructure using Terraform, configures the server
 
 ---
 
+# 📌 Project Architecture
+
+![Architecture](docs/project-architecture.png)
+
+---
 
 # 🚀 Tech Stack
 
@@ -47,8 +52,53 @@ The project provisions AWS infrastructure using Terraform, configures the server
 
 ---
 
+# 📂 Project Structure
+
+```text
+aws-jenkins-k3s
+│
+├── ansible/
+│   ├── inventory/
+│   ├── playbooks/
+│   ├── roles/
+│   └── ansible.cfg
+│
+├── app/
+│   ├── backend/
+│   ├── frontend/
+│   ├── docker-compose.yml
+│   └── Jenkinsfile
+│
+├── jenkins/
+│   └── Jenkinsfile
+│
+├── kubernetes/
+│   ├── backend.yaml
+│   ├── frontend.yaml
+│   ├── db.yaml
+│   ├── cache.yaml
+│   ├── ingress.yaml
+│   └── kind-config.yaml
+│
+├── terraform/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── providers.tf
+│   ├── outputs.tf
+│   ├── inventory.tpl
+│   └── terraform.tfvars
+│
+├── docs/
+│   └── project-architecture.png
+│
+└── README.md
+```
+
+---
+
 # ⚙️ CI/CD Workflow
 
+```text
 Developer
       │
       ▼
@@ -100,6 +150,7 @@ Grafana uses Prometheus as its data source to visualize:
 Terraform provisions:
 
 - VPC
+- EBS
 - Public Subnet
 - Internet Gateway
 - Route Table
@@ -176,7 +227,6 @@ The pipeline is automatically triggered using a **GitHub Webhook** whenever new 
 - Grafana Dashboard
 - Fully Automated Deployment Workflow
 
----
 
 
 # 📚 Skills Demonstrated
