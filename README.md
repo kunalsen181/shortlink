@@ -8,7 +8,7 @@ The project provisions AWS infrastructure using Terraform, configures the server
 
 # 📌 Project Architecture
 
-![Architecture](docs/project-architecture.png)
+![Architecture](screenshots/project-architecture.png)
 
 ---
 
