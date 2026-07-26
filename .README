@@ -1,1 +1,354 @@
-test
+# ��� End-to-End DevOps Deployment of a ShortLink Application
+
+An end-to-end DevOps project demonstrating Infrastructure as Code (IaC), Configuration Management, Containerization, Kubernetes Orchestration, CI/CD Automation, and Monitoring using modern DevOps tools.
+
+The project provisions AWS infrastructure with Terraform, configures the server using Ansible, deploys a Flask-based ShortLink application on Kubernetes (K3s), automates deployments using Jenkins, and monitors the infrastructure using Prometheus and Grafana.
+
+---
+
+# ��� Architecture
+
+```
+                    +----------------------+
+                    |      GitHub Repo     |
+                    +----------+-----------+
+                               |
+                         Git Push
+                               |
+                               ▼
+                    +----------------------+
+                    | GitHub Webhook       |
+                    +----------+-----------+
+                               |
+                               ▼
+                    +----------------------+
+                    | Jenkins CI/CD        |
+                    +----------+-----------+
+                               |
+                 Build Docker Images
+                               |
+                               ▼
+                    Push Images to Docker Hub
+                               |
+                               ▼
+                    +----------------------+
+                    | Kubernetes (K3s)     |
+                    +----------+-----------+
+                               |
+      -------------------------------------------------
+      |               |               |               |
+      ▼               ▼               ▼               ▼
+  Frontend        Backend        PostgreSQL        Redis
+
+                               |
+                               ▼
+                    +----------------------+
+                    | Prometheus           |
+                    +----------+-----------+
+                               |
+                               ▼
+                    +----------------------+
+                    | Grafana Dashboard    |
+                    +----------------------+
+```
+
+---
+
+# ��� Tech Stack
+
+### Cloud
+- AWS EC2
+- AWS VPC
+- AWS Security Groups
+
+### Infrastructure as Code
+- Terraform
+
+### Configuration Management
+- Ansible
+
+### Containerization
+- Docker
+- Docker Hub
+
+### Container Orchestration
+- Kubernetes (K3s)
+
+### CI/CD
+- Jenkins
+- GitHub Webhooks
+
+### Monitoring
+- Prometheus
+- Grafana
+
+### Application
+- Flask
+- PostgreSQL
+- Redis
+
+---
+
+# ��� Project Structure
+
+```
+shortlink-devops/
+
+├── ansible/
+│   ├── inventory/
+│   ├── playbooks/
+│   └── roles/
+│
+├── terraform/
+│   ├── main.tf
+│   ├── provider.tf
+│   ├── variables.tf
+│   └── outputs.tf
+│
+├── kubernetes/
+│   ├── backend-deployment.yml
+│   ├── frontend-deployment.yml
+│   ├── postgres.yml
+│   ├── redis.yml
+│   ├── ingress.yml
+│   └── monitoring.yml
+│
+├── docker/
+│   ├── backend.Dockerfile
+│   └── frontend.Dockerfile
+│
+├── jenkins/
+│   └── Jenkinsfile
+│
+├── backend/
+├── frontend/
+│
+├── screenshots/
+│
+└── README.md
+```
+
+---
+
+# ⚙ Infrastructure Provisioning
+
+Terraform provisions:
+
+- VPC
+- Public Subnet
+- Internet Gateway
+- Route Table
+- Security Group
+- EC2 Instance
+- SSH Key Pair
+
+---
+
+# ⚙ Configuration Management
+
+Ansible automatically installs and configures:
+
+- Docker
+- Kubernetes (K3s)
+- kubectl
+- Helm
+- Jenkins
+- Prometheus
+- Grafana
+
+---
+
+# ��� Containerization
+
+The application is containerized using Docker.
+
+Separate Docker images are built for:
+
+- Backend
+- Frontend
+
+Images are pushed to Docker Hub and later pulled inside the Kubernetes cluster.
+
+---
+
+# ☸ Kubernetes Deployment
+
+Application components deployed on K3s:
+
+- Frontend
+- Backend
+- PostgreSQL
+- Redis
+
+Kubernetes resources used:
+
+- Deployments
+- Services
+- Ingress
+
+---
+
+# ��� CI/CD Pipeline
+
+Pipeline flow:
+
+```
+Developer Pushes Code
+          │
+          ▼
+GitHub Webhook
+          │
+          ▼
+Jenkins Pipeline
+          │
+          ▼
+Build Docker Images
+          │
+          ▼
+Push Images to Docker Hub
+          │
+          ▼
+Update Kubernetes Deployment
+          │
+          ▼
+Rolling Update
+```
+
+---
+
+# ��� Monitoring
+
+Prometheus is used to collect metrics from the Kubernetes cluster.
+
+Metrics monitored include:
+
+- Node CPU Usage
+- Node Memory Usage
+- Node Disk Usage
+- Kubernetes Node Health
+- Pod Status
+- Pod Restarts
+- Kubernetes Services
+
+Grafana is connected to Prometheus and provides dashboards for visualizing these metrics.
+
+---
+
+# ��� Screenshots
+
+## Jenkins Pipeline
+
+> Add Screenshot
+
+---
+
+## GitHub Webhook
+
+> Add Screenshot
+
+---
+
+## Kubernetes Pods
+
+```bash
+kubectl get pods
+```
+
+> Add Screenshot
+
+---
+
+## Prometheus Dashboard
+
+> Add Screenshot
+
+---
+
+## Grafana Dashboard
+
+> Add Screenshot
+
+---
+
+## Terraform Apply
+
+> Add Screenshot
+
+---
+
+# ��� Deployment Steps
+
+## Provision Infrastructure
+
+```bash
+cd terraform
+
+terraform init
+
+terraform apply
+```
+
+---
+
+## Configure Server
+
+```bash
+cd ansible
+
+ansible-playbook setup.yml
+```
+
+---
+
+## Deploy Application
+
+```bash
+kubectl apply -f kubernetes/
+```
+
+---
+
+## CI/CD
+
+Whenever code is pushed to GitHub:
+
+- GitHub triggers Jenkins via Webhook.
+- Jenkins builds Docker images.
+- Images are pushed to Docker Hub.
+- Kubernetes performs a rolling update.
+
+---
+
+# ��� Features
+
+- Infrastructure as Code using Terraform
+- Automated Server Configuration using Ansible
+- Dockerized Flask Application
+- Kubernetes (K3s) Deployment
+- Jenkins Automated CI/CD Pipeline
+- GitHub Webhook Integration
+- Prometheus Monitoring
+- Grafana Dashboards
+- Rolling Application Updates
+
+---
+
+# ��� Future Improvements
+
+- SSL using Let's Encrypt
+- Alertmanager Integration
+- Persistent Storage for Jenkins & Grafana
+- Horizontal Pod Autoscaler (HPA)
+- Kubernetes Cluster Scaling
+- Application Metrics using Flask Prometheus Exporter
+
+---
+
+# ���‍��� Author
+
+**Kunal Sen**
+
+GitHub: https://github.com/<your-github-username>
+
+LinkedIn: https://linkedin.com/in/<your-linkedin>
+
