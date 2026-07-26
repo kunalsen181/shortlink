@@ -18,7 +18,7 @@ The project provisions AWS infrastructure using Terraform, configures the server
 - AWS EC2
 - AWS EBS
 - AWS VPC
-- Subnet
+- Public Subnet
 - Internet Gateway
 - Route Tables
 - Security Groups
