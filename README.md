@@ -60,14 +60,12 @@ aws-jenkins-k3s
 ├── ansible/
 │   ├── inventory/
 │   ├── playbooks/
-│   ├── roles/
 │   └── ansible.cfg
 │
 ├── app/
 │   ├── backend/
 │   ├── frontend/
 │   ├── docker-compose.yml
-│   └── Jenkinsfile
 │
 ├── jenkins/
 │   └── Jenkinsfile
@@ -87,9 +85,6 @@ aws-jenkins-k3s
 │   ├── outputs.tf
 │   ├── inventory.tpl
 │   └── terraform.tfvars
-│
-├── docs/
-│   └── project-architecture.png
 │
 └── README.md
 ```
